@@ -1,31 +1,43 @@
 const passport = require("passport");
+const bcrypt = require("bcrypt");
 const LocalStrategy = require("passport-local").Strategy;
+const ObjectID = require("mongodb").ObjectID;
 
-const User = { username: "admin", password: process.env.PASSWORD, id: 01 };
-
-module.exports = (app) => {
+module.exports = (app, db) => {
   app.use(passport.initialize());
   app.use(passport.session());
 
   passport.serializeUser(function (user, done) {
-    done(null, user.id);
+    done(null, user._id);
   });
 
   passport.deserializeUser(function (id, done) {
-    done(null, User);
+    db.collection("my-daily-climb").findOne(
+      { _id: new ObjectID(id) },
+      (err, doc) => {
+        done(null, doc);
+      }
+    );
   });
 
   passport.use(
     new LocalStrategy((username, password, done) => {
-      if (username !== User.username) {
-        console.log("incorrect username");
-        return done(null, false);
-      }
-      if (password !== User.password) {
-        console.log("incorrect password");
-        return done(null, false);
-      }
-      return done(null, User);
+      db.collection("my-daily-climb").findOne(
+        { username: username },
+        (err, user) => {
+          console.log("User " + username + " attempted to log in.");
+          if (err) {
+            return done(err);
+          }
+          if (!user) {
+            return done(null, false);
+          }
+          if (!bcrypt.compareSync(password, user.password)) {
+            return done(null, false);
+          }
+          return done(null, user);
+        }
+      );
     })
   );
 };

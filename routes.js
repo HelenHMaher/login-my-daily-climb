@@ -22,7 +22,7 @@ module.exports = (app) => {
 
   app.route("/login").post(
     passport.authenticate("local", {
-      successRedirect: "/prototype",
+      successRedirect: "https://my-daily-climb.herokuapp.com/",
       failureRedirect: "/",
     })
   );
