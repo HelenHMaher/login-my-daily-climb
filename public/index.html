@@ -51,8 +51,9 @@
 </head>
 
 <body>
-    <h1>Frontline Aid Prototype</h1>
-    <h4>updated:</h4>
+    <h1>My Daily Climb</h1>
+
+    <p>Login</p>
     <form class="login" action="/login" method="POST">
         <div class="inputField">
             <label>Username:</label>
@@ -66,6 +67,26 @@
             <input type="submit" value="Log In">
         </div>
     </form>
+
+    <p>Register</p>
+    <form class="register" action="/register" method="POST">
+        <div class="inputField">
+            <label>Username:</label>
+            <input type="text" name="username">
+        </div>
+        <div class="inputField">
+            <label>Password:</label>
+            <input type="password" name="password">
+        </div>
+        <div class="inputField">
+            <label>Confirm Password:</label>
+            <input type="password" name="ConfirmPassword">
+        </div>
+        <div class="inputField">
+            <input type="submit" value="Register">
+        </div>
+    </form>
+
     <form class="logout" action="/logout">
         <button type="submit">Logout
         </button>
